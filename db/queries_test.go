@@ -13,7 +13,7 @@ import (
 )
 
 func Test_Tx_Success(t *testing.T) {
-	conn, err := db.NewConn()
+	conn, err := db.InitPool()
 
 	if err != nil {
 		t.Error(err)
@@ -41,7 +41,7 @@ func Test_Tx_Success(t *testing.T) {
 }
 
 func Test_Tx_Fail(t *testing.T) {
-	conn, err := db.NewConn()
+	conn, err := db.InitPool()
 
 	if err != nil {
 		t.Error(err)

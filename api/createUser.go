@@ -9,6 +9,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgtype"
+	"github.com/jackc/pgx/v5/pgxpool"
 )
 
 type CreateUserDto struct {
@@ -16,7 +17,7 @@ type CreateUserDto struct {
 	PhoneNumber string `json:"phone_number" binding:"required"`
 }
 
-func CreateUser(ctx *gin.Context, q *db.Queries, conn *pgx.Conn) {
+func CreateUser(ctx *gin.Context, q *db.Queries, conn *pgxpool.Pool) {
 
 	var userDto CreateUserDto
 	if err := ctx.ShouldBindBodyWithJSON(&userDto); err != nil {

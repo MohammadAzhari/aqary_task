@@ -11,13 +11,14 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgtype"
+	"github.com/jackc/pgx/v5/pgxpool"
 )
 
 type GenerateOtpDto struct {
 	PhoneNumber string `json:"phone_number" binding:"required"`
 }
 
-func GenerateOtp(ctx *gin.Context, q *db.Queries, _ *pgx.Conn) {
+func GenerateOtp(ctx *gin.Context, q *db.Queries, _ *pgxpool.Pool) {
 
 	var generateOtpDto GenerateOtpDto
 	if err := ctx.ShouldBindBodyWithJSON(&generateOtpDto); err != nil {

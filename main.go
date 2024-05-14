@@ -1,7 +1,6 @@
 package main
 
 import (
-	"context"
 	"fmt"
 	"os"
 
@@ -10,14 +9,14 @@ import (
 )
 
 func main() {
-	conn, err := db.NewConn()
+	pool, err := db.InitPool()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Unable to connect to database: %v\n", err)
 		os.Exit(1)
 	}
-	defer conn.Close(context.Background())
+	defer pool.Close()
 
-	q := db.New(conn)
+	q := db.New(pool)
 
-	api.NewServer(q, conn)
+	api.NewServer(q, pool)
 }

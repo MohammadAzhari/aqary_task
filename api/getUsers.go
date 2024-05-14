@@ -9,10 +9,10 @@ import (
 
 	"github.com/MohammadAzhari/aqary_task/db"
 	"github.com/gin-gonic/gin"
-	"github.com/jackc/pgx/v5"
+	"github.com/jackc/pgx/v5/pgxpool"
 )
 
-func GetUsers(ctx *gin.Context, q *db.Queries, conn *pgx.Conn) {
+func GetUsers(ctx *gin.Context, q *db.Queries, _ *pgxpool.Pool) {
 	// count the users
 	cnt, err := q.CountUsers(ctx)
 	if err != nil {
@@ -32,14 +32,6 @@ func GetUsers(ctx *gin.Context, q *db.Queries, conn *pgx.Conn) {
 			defer wg.Done()
 			offset := i * pageSize
 			limit := pageSize
-
-			conn, err = db.NewConn()
-			if err != nil {
-				fmt.Println("Error:", err.Error())
-			}
-
-			defer conn.Close(ctx)
-			q := db.New(conn)
 
 			res, err := q.GetUsers(ctx, db.GetUsersParams{Offset: offset, Limit: limit})
 			if err != nil {

@@ -9,6 +9,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgtype"
+	"github.com/jackc/pgx/v5/pgxpool"
 )
 
 type VerifyOtpDto struct {
@@ -16,7 +17,7 @@ type VerifyOtpDto struct {
 	Otp         string `json:"otp" binding:"required"`
 }
 
-func VerifyOtp(ctx *gin.Context, q *db.Queries, _ *pgx.Conn) {
+func VerifyOtp(ctx *gin.Context, q *db.Queries, _ *pgxpool.Pool) {
 
 	var verifyOtpDto VerifyOtpDto
 	if err := ctx.ShouldBindBodyWithJSON(&verifyOtpDto); err != nil {

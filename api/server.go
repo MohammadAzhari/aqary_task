@@ -3,18 +3,18 @@ package api
 import (
 	"github.com/MohammadAzhari/aqary_task/db"
 	"github.com/gin-gonic/gin"
-	"github.com/jackc/pgx/v5"
+	"github.com/jackc/pgx/v5/pgxpool"
 )
 
 type Server struct {
 	q    *db.Queries
-	conn *pgx.Conn
+	conn *pgxpool.Pool
 }
 
-func NewServer(q *db.Queries, conn *pgx.Conn) {
+func NewServer(q *db.Queries, pool *pgxpool.Pool) {
 	s := &Server{
 		q:    q,
-		conn: conn,
+		conn: pool,
 	}
 
 	s.initRoutes()
@@ -34,7 +34,7 @@ func (s *Server) initRoutes() {
 	r.Run()
 }
 
-func (s *Server) bindParamsToHandler(fn func(*gin.Context, *db.Queries, *pgx.Conn)) gin.HandlerFunc {
+func (s *Server) bindParamsToHandler(fn func(*gin.Context, *db.Queries, *pgxpool.Pool)) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		fn(ctx, s.q, s.conn)
 	}
